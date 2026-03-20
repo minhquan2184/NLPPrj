@@ -1,0 +1,11 @@
+pandas
+requests
+beautifulsoup4
+feedparser
+underthesea
+scikit-learn
+streamlit
+joblib
+python-pptx
+fpdf
+newspaper3k
