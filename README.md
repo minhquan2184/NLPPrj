@@ -1,34 +1,66 @@
-# NLP VNExpress News Classification Project
+# Vietnamese News Classification Project
 
-Dự án phân loại tin tức tiếng Việt từ nguồn VNExpress sử dụng mô hình Naive Bayes. Dự án được thực hiện để tự động phân loại các bài báo vào các chuyên mục như Kinh doanh, Thể thao, Sức khỏe, Thời sự, Giải trí, Du lịch, Pháp luật.
+An NLP project designed to automatically classify Vietnamese news articles from **VNExpress** into categories such as Business, Sports, Health, etc., using a **Naive Bayes** model.
 
-## 1. Yêu cầu hệ thống
-- Python 3.11+
-- Các thư viện liệt kê trong `requirements.txt`
+## Project Overview
+The system consists of:
+1.  **Web Scraper**: Collects data from RSS feeds of various VNExpress categories.
+2.  **Model Training Pipeline**: Preprocesses text (using `underthesea` for Vietnamese tokenization), extracts features (`TfidfVectorizer`), and trains a `MultinomialNB` classifier.
+3.  **Web Interface**: A Streamlit dashboard to predict the category of an article given its URL in real-time.
 
-## 2. Cài đặt thư viện
-```bash
-pip install -r requirements.txt
-```
+---
 
-## 3. Chạy hệ thống
+## Deployment & Installation
 
-### Bước 1: Thu thập dữ liệu
-Chạy script `scraper.py` để lấy dữ liệu từ RSS feeds của VNExpress. Dữ liệu sau thu thập và tiền xử lý sẽ được lưu vào file `news_dataset.csv`.
+### Prerequisites
+- Python 3.11 or higher
+- Internet connection (for scraping)
+
+### Setup
+1.  **Clone the repository** (if applicable) or navigate to the project folder.
+2.  **Install dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+---
+
+## Data Management
+
+### Downloading/Generating Data
+Data is collected by scraping VNExpress RSS feeds.
+
+To generate the dataset (`news_dataset.csv`):
 ```bash
 python scraper.py
 ```
+*   **What it does**: Fetches articles, extracts content, cleans text (removes stopwords, tokenizes), and saves a CSV file containing: `title`, `content`, `content_cleaned`, `label`, `url`.
+*   *Note*: A pre-collected `news_dataset.csv` is usually included in this workspace.
 
-### Bước 2: Huấn luyện mô hình Naive Bayes
-Sử dụng script `train.py` để tiền xử lý văn bản, trích xuất đặc trưng với TF-IDF và huấn luyện mô hình phân loại (MultinomialNB).
+---
+
+## Model Training & Management
+
+### Training the Model
+To train the classifier on the dataset:
 ```bash
 python train.py
 ```
-Mô hình sẽ sinh ra hai file: `naive_bayes_model.pkl` và `tfidf_vectorizer.pkl`.
+*   **What it does**: Splits data into train/test sets, fits a `TfidfVectorizer` (saves as `tfidf_vectorizer.pkl`), trains a `MultinomialNB` model (saves as `naive_bayes_model.pkl`), and prints a performance report.
 
-### Bước 3: Deploy/Chạy Web Interface
-Sử dụng Streamlit để khởi chạy giao diện kiểm thử.
+### Model Artifacts
+The training procedure outputs:
+-   `naive_bayes_model.pkl`: The trained classifier.
+-   `tfidf_vectorizer.pkl`: The fitted text vectorizer.
+
+---
+
+## Running the Application
+
+Launch the Streamlit interface to test the model:
 ```bash
 streamlit run app.py
 ```
-Sau đó truy cập đường link localhost `http://localhost:8501` để dán một URL bài báo từ VNExpress và kiểm tra dự đoán.
+1.  Open the displayed URL (usually `http://localhost:8501`).
+2.  Paste a VNExpress article URL into the input field.
+3.  Click **Phân Loại** to see the predicted category and class probabilities.
